@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+
+  <script>
+    // validate object of vars
+    function validateObject(data, schema, returnOnFirstError = false) {
+      if (!data) {
+        return { message: "data object is not defined" };
+      }
+      if (typeof data !== "object") {
+        return { message: "data object must be type of Object" };
+      }
+      if (!schema) {
+        return { message: "schema object is not defined" };
+      }
+      //   if null or undefined
+
+      const errors = [];
+
+      for (const key in schema)
+        if (Object.hasOwnProperty.call(schema, key)) {
+          const variable = data[key];
+          const rules = schema[key];
+
+          const error = validate({ key, variable, rules });
+          if (error) errors.push(error);
+          if (returnOnFirstError) return { errors };
+        }
+
+      if (!errors.length) return {};
+      return { errors };
+    }
+
+    // validate var
+    function validate({ key, variable, rules }) {
+      if (!rules) {
+        return { message: "rules object is not defined" };
+      }
+      //   if null or undefined
+
+      let error = null;
+      if (rules.optional) if (isNullOrUndefined(variable)) return;
+
+      if (rules.type) {
+        switch (rules.type) {
+          case "string":
+            error = validateString(key, variable, rules);
+            break;
+          case "number":
+            error = validateNumber(key, variable, rules);
+            break;
+          case "boolean":
+            error = validateBoolean(key, variable, rules);
+            break;
+          case "date":
+            error = validateDate(key, variable, rules);
+            break;
+          case "array":
+            error = validateArray(key, variable, rules);
+            break;
+          case "object":
+            error = validateObject(key, variable, rules);
+            break;
+        }
+      }
+      return error;
+    }
+
+    function validateNumber(key = "", variable, rules) {
+      if (isNullOrUndefined(variable))
+        return { message: `${key} cannot be null or undefined` };
+      if (typeof variable !== "number")
+        return { message: `${key} must be a number` };
+      if (rules.max)
+        if (rules.max < variable)
+          return { message: `${key} must less or equal to ${rules.max}` };
+      if (rules.min)
+        if (rules.min > variable)
+          return { message: `${key} must highter or equal to ${rules.min}` };
+    }
+
+    function validateString(key = "", variable, rules) {
+      if (isNullOrUndefined(variable))
+        return { message: `${key} cannot be null or undefined` };
+      if (typeof variable !== "string")
+        return { message: `${key} must be a string` };
+      if (rules.maxLength && rules.maxLength < variable.length)
+        return {
+          message: `${key} length must less or equal to ${rules.maxLength}`,
+        };
+      if (rules.minLength && rules.minLength > variable.length)
+        return {
+          message: `${key} length must highter or equal to ${rules.minLength}`,
+        };
+    }
+
+    function validateBoolean(key = "", variable, rules) {
+      if (isNullOrUndefined(variable))
+        return { message: `${key} cannot be null or undefined` };
+      if (typeof variable !== "boolean")
+        return { message: `${key} must be a boolean` };
+    }
+
+    function validateDate(key = "", variable, rules) {
+      if (isNullOrUndefined(variable))
+        return { message: `${key} cannot be null or undefined` };
+      if (!(variable instanceof Date)) {
+        return { message: `${key} must be a instance of Date` };
+      }
+    }
+
+    function validateArray(key = "", variable, rules) {
+      if (isNullOrUndefined(variable))
+        return { message: `${key} cannot be null or undefined` };
+      if (!(variable instanceof Array))
+        return { message: `${key} must be an instance array` };
+      let errors = null;
+
+      if (rules.maxLength && rules.maxLength < variable.length)
+        return {
+          message: `${key} max length is ${rules.maxLength}`,
+        };
+      if (rules.minLength && rules.minLength > variable.length)
+        return {
+          message: `${key} min length is ${rules.minLength}`,
+        };
+
+      variable.forEach((value) => {
+        if (errors) return;
+        key = `-${key}`;
+        if (rules.arrayItemRules) {
+          errors = validate({
+            key,
+            variable: value,
+            rules: rules.arrayItemRules,
+          });
+        }
+      });
+
+      if (errors) return errors;
+    }
+
+    function validateArray(key = "", variable, rules) {
+      if (isNullOrUndefined(variable))
+        return { message: `${key} cannot be null or undefined` };
+      if (!(variable instanceof Array))
+        return { message: `${key} must be an instance array` };
+      let errors = null;
+
+      if (rules.maxLength && rules.maxLength < variable.length)
+        return {
+          message: `${key} max length is ${rules.maxLength}`,
+        };
+      if (rules.minLength && rules.minLength > variable.length)
+        return {
+          message: `${key} min length is ${rules.minLength}`,
+        };
+
+      variable.forEach((value) => {
+        if (errors) return;
+        key = `-${key}`;
+        if (rules.arrayItemRules) {
+          errors = validate({
+            key,
+            variable: value,
+            rules: rules.arrayItemRules,
+          });
+        }
+      });
+
+      if (errors) return errors;
+    }
+
+    function isNullOrUndefined(variable) {
+      if (typeof variable === "undefined" || typeof variable === "null")
+        return true;
+      return false;
+    }
+
+    // test
+    let num = undefined;
+    let str = "5151";
+    let bool = false;
+    let datetime = new Date(Date.now());
+    let arr = [[0], [1]];
+
+    const data = { str, bool, datetime, arr };
+    console.log(
+      validateObject(data, {
+        num: { optional: true, type: "number", min: 50, max: 60 },
+        str: { type: "string", minLength: 2, maxLength: 10 },
+        bool: { type: "boolean" },
+        datetime: { type: "date" },
+        arr: {
+          type: "array",
+          minLength: 0,
+          maxLength: 10,
+          arrayItemRules: {
+            optional: true,
+            type: "array",
+            arrayItemRules: { type: "number", min: 0, max: 1 },
+          },
+        },
+      })
+    );
+  </script>
+</html>
