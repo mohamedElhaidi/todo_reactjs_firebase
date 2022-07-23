@@ -15,7 +15,7 @@ import { firestoreInstance } from "./firebase/firestore";
 
 const authentificationInstance = getAuth(firebaseApp);
 
-connectAuthEmulator(authentificationInstance, "http://localhost:9099");
+// connectAuthEmulator(authentificationInstance, "http://localhost:9099");
 
 async function signInUser({ email, password }) {
   signInWithEmailAndPassword(authentificationInstance, email, password)
