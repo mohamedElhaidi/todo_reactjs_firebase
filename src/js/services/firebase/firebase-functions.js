@@ -7,6 +7,6 @@ import {
 
 // const firebaseFunctions =  getFunctions(firebaseApp);
 const firebaseFunctions = getFunctions(firebaseApp);
-connectFunctionsEmulator(firebaseFunctions, "localhost", 5001);
+// connectFunctionsEmulator(firebaseFunctions, "localhost", 5001);
 export const getFirebaseFunction = (funcName) =>
   httpsCallable(firebaseFunctions, funcName);
