@@ -17,9 +17,7 @@ const ProfilePage = ({ user: userAuth }) => {
   const [openEditProfileModal, setOpenEditProfileModal] = useState(false);
   const [openEditPasswordModal, setOpenEditPasswordModal] = useState(false);
   const [fetchedUser, setFetchedUser] = useState({});
-  const [projectsAssignedToUserRows, setProjectsAssignedToUserRows] = useState(
-    []
-  );
+  const [projectsAssignedRows, setProjectsAssignedRows] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -45,18 +43,18 @@ const ProfilePage = ({ user: userAuth }) => {
         snap.docChanges().forEach((docChange) => {
           switch (docChange.type) {
             case "added":
-              setProjectsAssignedToUserRows((prev) => [
+              setProjectsAssignedRows((prev) => [
                 ...prev,
                 {
                   id: docChange.doc.data().id,
-                  primary: docChange.doc.data().projectName,
+                  primary: docChange.doc.data().name,
                   onClick: () =>
                     navigate(`/projects/${docChange.doc.data().id}`),
                 },
               ]);
               break;
             case "removed":
-              setProjectsAssignedToUserRows((prev) =>
+              setProjectsAssignedRows((prev) =>
                 prev.filter((p) => p.id !== docChange.doc.data().id)
               );
               break;
@@ -109,9 +107,9 @@ const ProfilePage = ({ user: userAuth }) => {
               <ScoreCard
                 projects={fetchedUser.projectsCount}
                 finishedTickets={fetchedUser.finishedTicketsCount}
-                openTickets={fetchedUser.openTicketsCount}
+                openTickets={fetchedUser.ticketsCount}
                 finishedTasks={fetchedUser.finishedTasksCount}
-                openTasks={fetchedUser.openTasksCount}
+                openTasks={fetchedUser.tasksCount}
               />
             </Card>
           </Box>
@@ -123,7 +121,7 @@ const ProfilePage = ({ user: userAuth }) => {
               <Box>
                 <ProfileItemsList
                   headIcon={<AccountTreeOutlinedIcon />}
-                  data={projectsAssignedToUserRows}
+                  data={projectsAssignedRows}
                   title="Projects"
                 />
               </Box>
