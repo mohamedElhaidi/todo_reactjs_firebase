@@ -48,7 +48,7 @@ const ManageUsersPage = () => {
   };
 
   const handleOpenUserView = (user) => {
-    navigate(`/users/${user.id}`);
+    navigate(`/users/${user.id}/profile`);
   };
 
   const createRow = (user) => {

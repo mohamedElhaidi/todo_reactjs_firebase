@@ -107,11 +107,11 @@ const ProfilePage = ({ user: userAuth }) => {
               sx={{ p: 2, flex: 1, height: "100%", overflow: "auto" }}
             >
               <ScoreCard
-                projects={fetchedUser.projects}
-                finishedTickets={fetchedUser.finishedTickets}
-                openTickets={fetchedUser.openTickets}
-                finishedTasks={fetchedUser.finishedTasks}
-                openTasks={fetchedUser.openTasks}
+                projects={fetchedUser.projectsCount}
+                finishedTickets={fetchedUser.finishedTicketsCount}
+                openTickets={fetchedUser.openTicketsCount}
+                finishedTasks={fetchedUser.finishedTasksCount}
+                openTasks={fetchedUser.openTasksCount}
               />
             </Card>
           </Box>
