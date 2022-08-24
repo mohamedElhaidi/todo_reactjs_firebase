@@ -1,6 +1,7 @@
 import { Box, Chip } from "@mui/material";
 import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import withAuth from "../../../js/hoc/withAuth";
 import withSideMenuAndNavBar from "../../../js/hoc/withSideMenuAndNavBar";
 import { firestoreInstance } from "../../../js/services/firebase/firestore";
@@ -9,6 +10,7 @@ import { EnhencedTableModified } from "../../components/EnhencedTableModified";
 import EditProfileModal from "../../components/Modals/editProfileModal";
 
 const ManageUsersPage = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   useEffect(() => {
@@ -45,6 +47,10 @@ const ManageUsersPage = () => {
     setSelectedUser(user);
   };
 
+  const handleOpenUserView = (user) => {
+    navigate(user.id);
+  };
+
   const createRow = (user) => {
     return {
       id: user.id,
@@ -58,6 +64,16 @@ const ManageUsersPage = () => {
       createdAt: {
         label: timeSince(user.createdAt),
         value: user.createdAt,
+      },
+      viewAction: {
+        label: (
+          <Chip
+            size="small"
+            label="view"
+            onClick={() => handleOpenUserView(user)}
+          />
+        ),
+        value: "",
       },
       manageAction: {
         label: (
@@ -105,6 +121,13 @@ const ManageUsersPage = () => {
             disablePadding: true,
             sortable: true,
             label: "registered",
+          },
+          {
+            id: "viewAction",
+            visible: true,
+            disablePadding: true,
+            sortable: true,
+            label: "",
           },
           {
             id: "manageAction",

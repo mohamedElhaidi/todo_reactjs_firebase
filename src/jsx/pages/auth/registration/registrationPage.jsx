@@ -90,9 +90,7 @@ const RegistrationPage = () => {
             >
               use google Account
             </Button>
-            <Button onClick={() => {}} variant="contained" color="secondary">
-              use Github
-            </Button>
+
             <Link to="/auth/login">or login</Link>
           </Box>
         </form>

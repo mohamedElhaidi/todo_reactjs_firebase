@@ -54,7 +54,6 @@ function App() {
             <Router>
               {/* resets default styling for dom elements */}
               <CssBaseline />
-
               <Routes>
                 <Route path="/">
                   <Route path="projects">
