@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { Box, Modal, Paper } from "@mui/material";
+import LoadingOverlay from "./LoadingOverlay";
 
 const InnerModalBox = styled(Paper)(({ theme }) => {
   return {
@@ -13,11 +14,25 @@ const InnerModalBox = styled(Paper)(({ theme }) => {
     overflow: "auto",
   };
 });
-const EnhencedModal = ({ open, handleClose, children, sx }) => {
+const EnhencedModal = ({
+  open,
+  handleClose,
+  children,
+  sx,
+  loading = false,
+}) => {
   if (!open) return;
   return (
-    <Modal open={open} onClose={() => handleClose(false)}>
-      <InnerModalBox sx={sx}>{children}</InnerModalBox>
+    <Modal
+      open={open}
+      onClose={() => {
+        if (!loading) handleClose(false);
+      }}
+    >
+      <InnerModalBox sx={sx}>
+        <LoadingOverlay loading={loading} />
+        {children}
+      </InnerModalBox>
     </Modal>
   );
 };

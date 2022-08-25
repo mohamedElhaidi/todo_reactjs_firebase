@@ -32,6 +32,7 @@ const TodoFormModal = ({ projectId, todoId, open, handleClose }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setGlobalError(null);
+    setLoading(true);
 
     const todo = {
       title,
@@ -55,6 +56,7 @@ const TodoFormModal = ({ projectId, todoId, open, handleClose }) => {
       sx={{ width: "500px" }}
       open={open}
       handleClose={handleClose}
+      loading={loading}
     >
       <Card>
         <form onSubmit={handleFormSubmit}>

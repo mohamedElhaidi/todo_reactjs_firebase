@@ -36,6 +36,7 @@ import ProjectsOverviewsPage from "./pages/project/overviews/projectsOverviewsPa
 import NotImplemented from "./pages/static/notImplemented";
 import ManageUsersPage from "./pages/users/manageUsersPage";
 import { SnackbarProvider } from "notistack";
+import DemoPage from "./pages/auth/demo/demoPage";
 
 function App() {
   const { user } = useStore()[0];
@@ -92,6 +93,7 @@ function App() {
                   </Route>
                   <Route path="/auth">
                     <Route path="login" element={<LoginPage />} />
+                    <Route path="demo" element={<DemoPage />} />
                     <Route path="register" element={<RegistrationPage />} />
                   </Route>
                   <Route path="/me">

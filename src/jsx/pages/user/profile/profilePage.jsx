@@ -8,7 +8,7 @@ import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { firestoreInstance } from "../../../../js/services/firebase/firestore";
 import ProfileItemsList from "./profileItemsList";
 import EditProfileModal from "../../../components/Modals/editProfileModal";
-import EditPasswordModal from "./editPasswordModal";
+import EditPasswordModal from "../../../components/Modals/editPasswordModal";
 import withAuth from "../../../../js/hoc/withAuth";
 import TitlePageWrap from "../../../components/pageTitleWrap";
 import withSideMenuAndNavBar from "../../../../js/hoc/withSideMenuAndNavBar";

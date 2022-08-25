@@ -1,25 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { getUsersPublic } from "../../../js/services/users";
 import { createTicket, modifyTicket } from "../../../js/services/tickets";
-
 import {
-  Container,
-  Card,
   Stack,
   Typography,
-  Link,
-  Modal,
   TextField,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   Button,
-  Box,
-  Autocomplete,
-  LinearProgress,
-  Alert,
 } from "@mui/material";
 import EnhencedModal from "../EnhencedModal";
 import {
@@ -30,17 +19,7 @@ import {
 import { getTaskSeverity } from "../../../js/tasks.utils";
 import { useSnackbar } from "notistack";
 import UsersAutocompleteList from "../../form/usersAutocompleteList";
-
-const ticketModalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-
-  transform: "translate(-50%, -50%)",
-  width: 600,
-
-  boxShadow: 24,
-};
+import { useState } from "react";
 
 const TicketFormModal = ({
   projectId,
@@ -49,7 +28,7 @@ const TicketFormModal = ({
   ticketModalCloseHandle,
 }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
+  const [loading, setLoading] = useState(false);
   // form
   const [title, setTitle] = React.useState(
     ticketToEdit ? ticketToEdit.title : ""
@@ -66,8 +45,6 @@ const TicketFormModal = ({
   // pre-defined
   const [types, setTypes] = React.useState(getTicketTypesCodes());
   const [severities, setSeverities] = React.useState(getTicketSeverityCodes());
-
-  const navigate = useNavigate();
 
   const handleUserAutocompleteSuccess = (users) => {
     // if we are editing
@@ -90,6 +67,7 @@ const TicketFormModal = ({
   };
 
   const handleSubmite = () => {
+    setLoading(true);
     const newticket = {
       projectId,
       title: String(title),
@@ -104,22 +82,24 @@ const TicketFormModal = ({
         .then(({ data }) => {
           ticketModalCloseHandle(true);
           enqueueSnackbar(data.message, { variant: "success" });
-          console.log(data);
+          setLoading(false);
         })
         .catch((err) => {
           console.error(err);
           enqueueSnackbar(err.message, { variant: "error" });
+          setLoading(false);
         });
     else
       modifyTicket({ ticketId: ticketToEdit.id, ...newticket })
         .then(({ data }) => {
           ticketModalCloseHandle(true);
           enqueueSnackbar(data.message, { variant: "success" });
-          console.log(data);
+          setLoading(false);
         })
         .catch((err) => {
           console.error(err);
           enqueueSnackbar(err.message, { variant: "error" });
+          setLoading(false);
         });
   };
 
@@ -147,6 +127,7 @@ const TicketFormModal = ({
       open={ticketModalOpen}
       handleClose={ticketModalCloseHandle}
       sx={{ minWidth: 550, padding: 2 }}
+      loading={loading}
     >
       <Stack spacing={3} sx={{ padding: "0 1em 1em 1em" }}>
         <Typography component="h1" variant="h5" sx={{ pt: 1, pb: 3 }}>

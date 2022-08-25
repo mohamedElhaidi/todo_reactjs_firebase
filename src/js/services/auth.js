@@ -44,6 +44,8 @@ async function signUserOut() {
 
 async function registerUser({ email, password, name }) {
   try {
+    const emailRegex = new RegExp("[a-zA-Z0-9]*@[a-zA-Z0-9]*.[a-zA-Z0-9]*");
+    if (!email.match(emailRegex)) throw new Error("Email is wrong");
     const userCredential = await createUserWithEmailAndPassword(
       authentificationInstance,
       email,

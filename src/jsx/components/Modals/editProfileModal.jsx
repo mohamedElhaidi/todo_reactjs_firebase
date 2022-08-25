@@ -32,7 +32,7 @@ const EditProfileModal = ({ open, handleClose, user }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pfp, setPfp] = useState(null);
-  const [uploadingProgress, setUploadingProgress] = useState(null);
+  const [uploadingProgress, setUploadingProgress] = useState(-1);
 
   useEffect(() => {
     if (!open || !user) return;
@@ -61,7 +61,7 @@ const EditProfileModal = ({ open, handleClose, user }) => {
       handleSubmit();
       return;
     }
-
+    setUploadingProgress(0);
     const imgRef = ref(
       firebaseStorage,
       `/images/profile/${v4() + picture.name}`
@@ -88,7 +88,7 @@ const EditProfileModal = ({ open, handleClose, user }) => {
         getDownloadURL(uploadImg.snapshot.ref).then((downloadURL) => {
           setPfp(downloadURL);
           handleSubmit(downloadURL);
-          setUploadingProgress(null);
+          setUploadingProgress(-1);
           handleClose();
         });
       }
@@ -118,12 +118,12 @@ const EditProfileModal = ({ open, handleClose, user }) => {
     fileInputElement.current.click();
   };
   return (
-    <EnhencedModal open={open} handleClose={handleClose}>
+    <EnhencedModal
+      open={open}
+      handleClose={handleClose}
+      loading={uploadingProgress > -1 ? true : false}
+    >
       <Box p={5}>
-        <LoadingOverlay
-          loading={Boolean(uploadingProgress)}
-          value={uploadingProgress}
-        />
         <Stack direction="row" gap={2}>
           <Box
             position="relative"

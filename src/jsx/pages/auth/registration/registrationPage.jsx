@@ -1,32 +1,26 @@
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
-
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   loginUserWithGoogle,
   registerUser,
 } from "../../../../js/services/auth";
-import { useStore } from "../../../../js/services/Context/StoreContext";
 import { getRedirectParam } from "../../../../js/utils";
 import TitlePageWrap from "../../../components/pageTitleWrap";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 
 const RegistrationPage = () => {
-  const { isAuth, user } = useStore()[0];
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
-
   const handleSubmit = (event) => {
     event.preventDefault();
+    setError(null);
     const data = { name, email, password };
     registerUser(data)
       .then((r) => {
         console.info("user has been created successufly");
-
         const redirectUrl = getRedirectParam();
         window.location.href = redirectUrl;
       })
@@ -88,7 +82,7 @@ const RegistrationPage = () => {
               variant="contained"
               color="error"
             >
-              use google Account
+              google Account
             </Button>
 
             <Link to="/auth/login">or login</Link>

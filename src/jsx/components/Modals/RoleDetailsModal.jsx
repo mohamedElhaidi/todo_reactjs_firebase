@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import { firestoreInstance } from "../../../js/services/firebase/firestore";
 import { assignRoleTo, unassignRoleFrom } from "../../../js/services/roles";
-import { getUsersPublic } from "../../../js/services/users";
 import { EnhencedTableModified } from "../EnhencedTableModified";
 
 import {
-  Autocomplete,
   Button,
-  Card,
   FormControlLabel,
-  Modal,
   Stack,
   Switch,
   TextField,

@@ -21,7 +21,6 @@ import { firebaseStorage } from "../../../js/services/firebase/firebase-storage"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import LoadingOverlay from "../LoadingOverlay";
 import { addAttachement } from "../../../js/services/tickets";
-import { async } from "@firebase/util";
 import { getFileType } from "../../../js/utils";
 import { useSnackbar } from "notistack";
 const AttachementFormModal = ({
@@ -32,10 +31,8 @@ const AttachementFormModal = ({
   handleClose,
 }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
-
   const [description, setDescription] = useState("");
 
   const handleFormSubmit = (e) => {
@@ -113,7 +110,6 @@ const AttachementFormModal = ({
       loading={loading}
       handleClose={handleClose}
     >
-      <LoadingOverlay loading={loading} />
       <form onSubmit={handleFormSubmit}>
         <Stack gap={2} p={2} px={3}>
           <TextEnhenced

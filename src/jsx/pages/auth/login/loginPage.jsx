@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { loginUserWithGoogle, signInUser } from "../../../../js/services/auth";
 import { useStore } from "../../../../js/services/Context/StoreContext";
@@ -41,7 +41,7 @@ const LoginPage = () => {
 
   return (
     <TitlePageWrap title="Login page">
-      <Box m="auto" maxWidth={500} pt={5}>
+      <Stack m="auto" maxWidth={600} pt={5} gap={5}>
         <Card variant="outlined">
           <form onSubmit={handleSubmit}>
             <Box
@@ -54,7 +54,7 @@ const LoginPage = () => {
                 justifyContent: "center",
               }}
             >
-              <Typography component="h1" variant="h5">
+              <Typography component="h1" variant="h5" fontWeight="bold">
                 Login page
               </Typography>
 
@@ -79,14 +79,15 @@ const LoginPage = () => {
                 variant="contained"
                 color="error"
               >
-                use google Account
+                google Account
               </Button>
-              <Link>Forgot password ?</Link>
+              {/* <Link>Forgot password ?</Link> */}
               <Link href="/auth/register">Register</Link>
+              <Link href="/auth/demo">Use a demo Account?</Link>
             </Box>
           </form>
         </Card>
-      </Box>
+      </Stack>
     </TitlePageWrap>
   );
 };

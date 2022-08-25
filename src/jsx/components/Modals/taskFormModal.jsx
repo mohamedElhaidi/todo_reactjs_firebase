@@ -72,6 +72,7 @@ const TaskFormModal = ({
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setGlobalError(null);
+    setLoading(true);
 
     const data = {
       projectId: taskToEdit ? taskToEdit.project.id : projectId,
@@ -118,6 +119,7 @@ const TaskFormModal = ({
       sx={{ minWidth: "700px" }}
       open={open}
       handleClose={handleClose}
+      loading={loading}
     >
       <Card>
         <form onSubmit={handleFormSubmit}>
