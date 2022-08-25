@@ -11,12 +11,14 @@ import TitlePageWrap from "../../components/pageTitleWrap";
 import RoleDetailsModal from "../../components/Modals/RoleDetailsModal";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import withSideMenuAndNavBar from "../../../js/hoc/withSideMenuAndNavBar";
+import { useSnackbar } from "notistack";
 
 const ManageRolesPage = () => {
   const [roles, setRoles] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(null);
   const [selectedRoleId, setSelectedRoleId] = React.useState(null);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
   const goTo = (url) => {
@@ -57,9 +59,11 @@ const ManageRolesPage = () => {
           // console.log(roleDocRef);
         })
       );
+      enqueueSnackbar("Roles has been deleted", { variant: "success" });
     } catch (error) {
       console.error(error.message);
       setErrorMessage(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
     }
     setLoading(false);
   };

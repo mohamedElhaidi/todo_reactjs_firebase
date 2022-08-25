@@ -8,10 +8,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { loginUserWithGoogle, signInUser } from "../../../../js/services/auth";
-import { useStore } from "../../../../js/services/Context/StoreContext";
 import { getRedirectParam } from "../../../../js/utils";
 import TitlePageWrap from "../../../components/pageTitleWrap";
 
@@ -26,7 +24,7 @@ const LoginPage = () => {
     };
 
     signInUser(Credential)
-      .then((data) => {
+      .then(() => {
         const redirectUrl = getRedirectParam();
         window.location.href = redirectUrl;
       })
@@ -61,7 +59,7 @@ const LoginPage = () => {
               <Typography component="h1" variant="h5" fontWeight="bold">
                 Login page
               </Typography>
-              {error && <Alert color="error">{error}</Alert>}
+              {error && <Alert severity="error">{error}</Alert>}
               <TextField
                 size="small"
                 id="email"

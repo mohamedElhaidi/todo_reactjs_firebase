@@ -2,16 +2,11 @@ import {
   Badge,
   Box,
   darken,
-  Icon,
   IconButton,
   List,
-  ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
-  Paper,
   Popover,
-  Popper,
   Typography,
 } from "@mui/material";
 import * as React from "react";
@@ -126,32 +121,36 @@ const Notifictaion = () => {
             overflow: "auto",
           }}
         >
-          <List>
-            {notifications.map((notif) => (
-              <ListItemButton
-                sx={{
-                  backgroundColor: notif.read ? "#fff" : "#65c2f8a4",
-                  "&:hover": {
-                    backgroundColor: darken(
-                      notif.read ? "#fff" : "#65c2f8a4",
-                      0.2
-                    ),
-                  },
-                }}
-                onClick={() => handleNotificationItemClick(notif)}
-                key={notif.id}
-                disableRipple
-                disableTouchRipple
-              >
-                <ListItemText
-                  sx={{ marginTop: 1 }}
-                  primaryTypographyProps={{ textTransform: "uppercase" }}
-                  primary={notif.title}
-                  secondary={notif.message}
-                />
-              </ListItemButton>
-            ))}
-          </List>
+          {notifications.length ? (
+            <List>
+              {notifications.map((notif) => (
+                <ListItemButton
+                  sx={{
+                    backgroundColor: notif.read ? "#fff" : "#65c2f8a4",
+                    "&:hover": {
+                      backgroundColor: darken(
+                        notif.read ? "#fff" : "#65c2f8a4",
+                        0.2
+                      ),
+                    },
+                  }}
+                  onClick={() => handleNotificationItemClick(notif)}
+                  key={notif.id}
+                  disableRipple
+                  disableTouchRipple
+                >
+                  <ListItemText
+                    sx={{ marginTop: 1 }}
+                    primaryTypographyProps={{ textTransform: "uppercase" }}
+                    primary={notif.title}
+                    secondary={notif.message}
+                  />
+                </ListItemButton>
+              ))}
+            </List>
+          ) : (
+            <Typography p={3}>No notifications</Typography>
+          )}
         </Box>
       </Popover>
     </div>

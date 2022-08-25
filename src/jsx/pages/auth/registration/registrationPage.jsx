@@ -73,6 +73,7 @@ const RegistrationPage = () => {
               size="small"
               label="Password"
               variant="outlined"
+              type="password"
             />
             <Button type="submit" variant="contained" color="success">
               Register

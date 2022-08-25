@@ -1,24 +1,26 @@
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import React from "react";
-import { Chip, IconButton, Stack, TextField } from "@mui/material";
-import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
-import { deleteProjects, getProjects } from "../../../js/services/projects";
-import LoadingOverlay from "../../components/LoadingOverlay";
-import { EnhencedTableModified } from "../../components/EnhencedTableModified";
-import { timeSince } from "../../../js/utils";
+import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
+import { deleteProjects, getProjects } from "../../../js/services/projects";
+import { timeSince } from "../../../js/utils";
+import withAuth from "../../../js/hoc/withAuth";
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestoreInstance } from "../../../js/services/firebase/firestore";
-import withAuth from "../../../js/hoc/withAuth";
+import { Chip, IconButton, Stack, TextField } from "@mui/material";
+import OpenInFullOutlinedIcon from "@mui/icons-material/OpenInFullOutlined";
+import LoadingOverlay from "../../components/LoadingOverlay";
+import { EnhencedTableModified } from "../../components/EnhencedTableModified";
+import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
 import TitlePageWrap from "../../components/pageTitleWrap";
 import withSideMenuAndNavBar from "../../../js/hoc/withSideMenuAndNavBar";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
+
 const ProjectsListPage = () => {
   const [loading, setLoading] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const navigate = useNavigate();
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   React.useEffect(() => {
     setLoading(true);
     const projectsDocRef = collection(firestoreInstance, "/projects");
@@ -140,7 +142,11 @@ const ProjectsListPage = () => {
   };
 
   const handleDeletion = (ids) => {
-    deleteProjects(ids);
+    deleteProjects(ids)
+      .then(() =>
+        enqueueSnackbar("Project has been deleted", { variant: "success" })
+      )
+      .catch((err) => enqueueSnackbar(err.message, { variant: "error" }));
   };
   return (
     <TitlePageWrap title="Projects">

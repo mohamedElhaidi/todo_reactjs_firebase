@@ -17,18 +17,8 @@ const authentificationInstance = getAuth(firebaseApp);
 
 // connectAuthEmulator(authentificationInstance, "http://localhost:9099");
 
-async function signInUser({ email, password }) {
-  signInWithEmailAndPassword(authentificationInstance, email, password)
-    .then((userCredential) => {
-      // Signed in
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      console.log(errorMessage);
-    });
+function signInUser({ email, password }) {
+  return signInWithEmailAndPassword(authentificationInstance, email, password);
 }
 async function signUserOut() {
   await signOut(authentificationInstance)
@@ -59,7 +49,7 @@ async function registerUser({ email, password, name }) {
 
     // update profile in firestore
     const userDocRef = doc(firestoreInstance, "/users/" + user.uid);
-    setDoc(userDocRef, { name });
+    await setDoc(userDocRef, { name });
   } catch (error) {
     console.error(error);
     throw error.message;

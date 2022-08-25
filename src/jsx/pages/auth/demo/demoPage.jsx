@@ -8,12 +8,26 @@ import AdminIconIMG from "../../../../res/img/setting.png";
 import DeveloperIconIMG from "../../../../res/img/webdev.png";
 import ManagerIconIMG from "../../../../res/img/pm.png";
 
+const creds = [
+  {
+    email: "admin@demo.com",
+    password: "123456789",
+  },
+  {
+    email: "admin@demo.com",
+    password: "123456789",
+  },
+];
 const DemoPage = () => {
-  const handleSignInWithGoogle = async () => {
-    await loginUserWithGoogle();
-
-    const redirectUrl = getRedirectParam();
-    window.location.href = redirectUrl;
+  const handleDemoLogin = async (cred) => {
+    signInUser(cred)
+      .then(() => {
+        const redirectUrl = getRedirectParam();
+        window.location.href = redirectUrl;
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -29,19 +43,20 @@ const DemoPage = () => {
               content. any changes will not be applied
             </Typography>
             <Box display="flex" flexWrap="wrap" gap={2} p={3}>
-              <AccountCard onClick={handleSignInWithGoogle} variant="outlined">
+              <AccountCard
+                onClick={() => handleDemoLogin(creds[0])}
+                variant="outlined"
+              >
                 <img src={AdminIconIMG} />
                 <Typography component="h1" variant="h5" fontWeight="bold">
                   Admin
                 </Typography>
               </AccountCard>
-              <AccountCard onClick={handleSignInWithGoogle} variant="outlined">
-                <img src={ManagerIconIMG} />
-                <Typography component="h1" variant="h5" fontWeight="bold">
-                  Project Manager
-                </Typography>
-              </AccountCard>
-              <AccountCard onClick={handleSignInWithGoogle} variant="outlined">
+
+              <AccountCard
+                onClick={() => handleDemoLogin(creds[1])}
+                variant="outlined"
+              >
                 <img src={DeveloperIconIMG} />
                 <Typography component="h1" variant="h5" fontWeight="bold">
                   Developer
