@@ -1,40 +1,14 @@
-import {
-  Box,
-  Button,
-  Card,
-  Link,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import AdminIconIMG from "../../../../res/img/setting.png";
-import DeveloperIconIMG from "../../../../res/img/web-development.png";
-import ManagerIconIMG from "../../../../res/img/project-management.png";
-import { useNavigate } from "react-router-dom";
+import { Box, Card, Link, Stack, Typography } from "@mui/material";
 import { loginUserWithGoogle, signInUser } from "../../../../js/services/auth";
-import { useStore } from "../../../../js/services/Context/StoreContext";
 import { getRedirectParam } from "../../../../js/utils";
 import TitlePageWrap from "../../../components/pageTitleWrap";
 import AccountCard from "../../../components/AccountCard";
 
+import AdminIconIMG from "../../../../res/img/setting.png";
+import DeveloperIconIMG from "../../../../res/img/webdev.png";
+import ManagerIconIMG from "../../../../res/img/pm.png";
+
 const DemoPage = () => {
-  const { isAuth, user } = useStore()[0];
-  const navigate = useNavigate();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const Credential = {
-      email: e.target["email"].value,
-      password: e.target["password"].value,
-    };
-
-    signInUser(Credential)
-      .then((data) => {
-        const redirectUrl = getRedirectParam();
-        window.location.href = redirectUrl;
-      })
-      .catch((err) => console.log(err.message));
-  };
-
   const handleSignInWithGoogle = async () => {
     await loginUserWithGoogle();
 
