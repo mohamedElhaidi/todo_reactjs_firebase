@@ -52,7 +52,7 @@ const RegistrationPage = () => {
               Registration page
             </Typography>
 
-            {error && <Alert>{error}</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
             <TextField
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}

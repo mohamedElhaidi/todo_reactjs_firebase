@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -15,8 +16,8 @@ import { getRedirectParam } from "../../../../js/utils";
 import TitlePageWrap from "../../../components/pageTitleWrap";
 
 const LoginPage = () => {
-  const { isAuth, user } = useStore()[0];
-  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const Credential = {
@@ -29,7 +30,10 @@ const LoginPage = () => {
         const redirectUrl = getRedirectParam();
         window.location.href = redirectUrl;
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        setError(err.message);
+        console.log(err.message);
+      });
   };
 
   const handleSignInWithGoogle = async () => {
@@ -57,7 +61,7 @@ const LoginPage = () => {
               <Typography component="h1" variant="h5" fontWeight="bold">
                 Login page
               </Typography>
-
+              {error && <Alert color="error">{error}</Alert>}
               <TextField
                 size="small"
                 id="email"
